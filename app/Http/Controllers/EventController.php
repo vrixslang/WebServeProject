@@ -30,10 +30,10 @@ class EventController extends Controller
     public function details($id)
     {
         $events = Event::where('id',$id)->with('room','channels', 'event_tickets', 'session')->get();
-        return response()->json([
-            'event_details'=>$events
-        ], 200);
-        // return view('eventDetail', compact('events'));
+        // return response()->json([
+        //     'event_details'=>$events
+        // ], 200);
+        return view('eventDetail', compact('events'));
 
 
 

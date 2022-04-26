@@ -22,36 +22,14 @@
     <span class="navbar-organizer w-100">{insert organization name}</span>
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" id="logout" href="index.html">Sign out</a>
+            <a class="nav-link" id="logout" href="http://127.0.0.1:8000/api/logout">Sign out</a>
         </li>
     </ul>
 </nav>
 
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="events/index.html">Manage Events</a></li>
-                </ul>
-
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>{insert event name}</span>
-                </h6>
-                <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link active" href="events/detail.html">Overview</a></li>
-                </ul>
-
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>Reports</span>
-                </h6>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item"><a class="nav-link" href="reports/index.html">Room capacity</a></li>
-                </ul>
-            </div>
-        </nav>
-
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4  mt-5">
+        <main role="main" class="col-md-12 ml-sm-auto px-4  mt-5">
             <div class="border-bottom mb-3 pt-3 pb-2 event-title">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
                     <h1 class="h2">@foreach($events as $event) {{ $event->name }} @endforeach</h1>
@@ -69,11 +47,6 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
                     <h2 class="h4">Tickets</h2>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                        <!-- <div class="btn-group mr-2">
-                            <a href="tickets/create.html" class="btn btn-sm btn-outline-secondary">
-                                Create new ticket
-                            </a>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -81,21 +54,24 @@
             <div class="row tickets">
             @foreach($events as $et)
                 @foreach($et -> event_tickets as $event_ticket)
-                    <div class="col-md-4">
-                        <div class="card mb-4 shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $event_ticket -> name }}</h5>
-                                <p class="card-text">cost: {{ $event_ticket -> cost }}</p>
-                                @if ($event_ticket -> special_validity != NULL)
-                                    @foreach(json_decode($event_ticket->special_validity, true) as $sv)
-                                    {{ $sv }}
-                                    
-                                    @endforeach
-                                @endif
+                        <div class="col-md-4">
+                            
+                            <a href="{{ url('api/v1/events', ['id' => $event_ticket->id], ['token' => $event_ticket->id]) }}">
+                            <div class="card mb-4 shadow-sm" >
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $event_ticket -> name }}</h5>
+                                    <p class="card-text">cost: {{ $event_ticket -> cost }}</p>
+                                    @if ($event_ticket -> special_validity != NULL)
+                                        @foreach(json_decode($event_ticket->special_validity, true) as $sv)
+                                        {{ $sv }}
+                                        
+                                        @endforeach
+                                    @endif
+                                </div>
                             </div>
+                            </a>
                         </div>
-                    </div>
-                    @endforeach
+                @endforeach
             @endforeach
             </div>
 
